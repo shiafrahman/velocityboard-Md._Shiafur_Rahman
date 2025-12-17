@@ -22,7 +22,7 @@ namespace VelocityBoard.Web.Pages.Account
             }
             else
             {
-                // Redirect to login page after logout
+                
                 return RedirectToPage("/Account/Login");
             }
         }

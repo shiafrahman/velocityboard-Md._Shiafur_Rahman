@@ -29,7 +29,7 @@ namespace VelocityBoard.API.Controllers
 
             if (result == null)
             {
-                // This could be due to a duplicate username or email
+                
                 return Conflict("A user with that username or email already exists.");
             }
 

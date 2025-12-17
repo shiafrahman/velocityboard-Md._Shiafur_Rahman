@@ -192,7 +192,7 @@
         font-weight: 500;
     }
 
-    /* Assigned To */
+    
     .user-avatar {
         width: 36px;
         height: 36px;
@@ -207,7 +207,7 @@
         margin-right: 10px;
     }
 
-    /* Status Select */
+    
     .status-select-container {
         position: relative;
         width: 140px;
@@ -246,7 +246,7 @@
         pointer-events: none;
     }
 
-    /* Priority */
+   
     .priority-badge {
         padding: 6px 16px;
         border-radius: 20px;
@@ -277,7 +277,7 @@
         border: 1px solid #86efac;
     }
 
-    /* Due Date */
+   
     .due-date {
         display: flex;
         align-items: center;
@@ -294,7 +294,7 @@
             color: #94a3b8;
         }
 
-    /* Action Buttons */
+    
     .action-buttons {
         display: flex;
         gap: 8px;
@@ -333,7 +333,7 @@
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
 
-    /* Empty State */
+    
     .empty-state {
         text-align: center;
         padding: 80px 20px;
@@ -371,7 +371,7 @@
         margin-right: auto;
     }
 
-    /* Status Colors */
+    
     option[value="Todo"] {
         color: #64748b;
     }
@@ -390,7 +390,7 @@
 </style>
 
 <div class="tasks-container">
-    <!-- Page Header -->
+   
     <div class="page-header">
         <div class="page-title">
             <div class="page-title-icon">
@@ -407,7 +407,7 @@
         </a>
     </div>
 
-    <!-- Table Container -->
+   
     <div class="table-container">
         <table class="tasks-table">
             <thead>
@@ -427,7 +427,7 @@
                     @foreach (var task in Model.Tasks)
                     {
                         <tr>
-                            <!-- Task Title -->
+                            
                             <td>
                                 <div class="task-title">
                                     <div class="task-icon">
@@ -437,7 +437,7 @@
                                 </div>
                             </td>
 
-                            <!-- Project -->
+                            
                             <td>
                                 <div class="project-info">
                                     <div class="project-icon">
@@ -447,7 +447,7 @@
                                 </div>
                             </td>
 
-                            <!-- Assigned To -->
+                            
                             <td>
                                 <div style="display: flex; align-items: center;">
                                     <div class="user-avatar">
@@ -457,7 +457,7 @@
                                 </div>
                             </td>
 
-                            <!-- Status -->
+                            
                             <td>
                                 <div class="status-select-container">
 
@@ -476,7 +476,7 @@
                                 </div>
                             </td>
 
-                            <!-- Priority -->
+                            
                             <td>
                                 
                                 <span class="priority-badge">
@@ -485,7 +485,7 @@
                                 </span>
                             </td>
 
-                            <!-- Due Date -->
+                           
                             <td>
                                 <div class="due-date">
                                     <i class="bi bi-calendar"></i>
@@ -493,7 +493,7 @@
                                 </div>
                             </td>
 
-                            <!-- Actions -->
+                           
                             <td>
                                 <div class="action-buttons">
                                     <a asp-page="/Tasks/Edit" asp-route-id="@task.Id" class="action-btn btn-edit" title="Edit">
@@ -535,20 +535,20 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Status select loading effect
+        
         const statusSelects = document.querySelectorAll('.status-select');
         statusSelects.forEach(select => {
             select.addEventListener('change', function() {
-                // Add loading state
+                
                 this.style.opacity = '0.7';
                 this.disabled = true;
 
-                // Submit the form
+               
                 this.form.submit();
             });
         });
 
-        // Priority badge hover effect
+        
         const priorityBadges = document.querySelectorAll('.priority-badge');
         priorityBadges.forEach(badge => {
             badge.addEventListener('mouseenter', function() {
@@ -560,7 +560,7 @@
             });
         });
 
-        // Action button hover effects
+        
         const actionButtons = document.querySelectorAll('.action-btn');
         actionButtons.forEach(btn => {
             btn.addEventListener('mouseenter', function() {
@@ -572,7 +572,7 @@
             });
         });
 
-        // Task row hover effect
+        
         const taskRows = document.querySelectorAll('.tasks-table tbody tr');
         taskRows.forEach(row => {
             row.addEventListener('mouseenter', function() {

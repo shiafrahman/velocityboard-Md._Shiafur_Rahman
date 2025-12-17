@@ -79,7 +79,7 @@ namespace VelocityBoard.Application.Services
         public async Task<IEnumerable<ProjectDto>> GetProjectsForUserAsync(int userId)
         {
             var projects = await _context.Projects
-                .Where(p => p.CreatedByUserId == userId) // <-- THE KEY FILTER
+                .Where(p => p.CreatedByUserId == userId) 
                 .Include(p => p.CreatedByUser)
                 .ToListAsync();
             return _mapper.Map<IEnumerable<ProjectDto>>(projects);

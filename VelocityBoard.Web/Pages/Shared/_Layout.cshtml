@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - VelocityBoard</title>
 
-    <!-- Bootstrap 5 CSS -->
+    
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
-    <!-- Bootstrap Icons -->
+   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-    <!-- Custom CSS -->
+   
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
-    <!-- Font Awesome (optional, if you prefer) -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Custom Styles -->
+    
     <style>
         :root {
             --primary-color: #4f46e5;
@@ -303,21 +303,21 @@
     <header>
         <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <!-- Brand with icon -->
+                
                 <a class="navbar-brand" asp-page="/Dashboard">
                     <i class="bi bi-speedometer2"></i>
                     VelocityBoard
                 </a>
 
-                <!-- Mobile toggle -->
+               
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                         aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
                 </button>
 
-                <!-- Navbar content -->
+                
                 <div class="collapse navbar-collapse" id="navbarContent">
-                    <!-- Left navigation -->
+                    
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         @if (User.Identity.IsAuthenticated)
                         {
@@ -342,7 +342,7 @@
                         }
                     </ul>
 
-                    <!-- Right navigation -->
+                    
                     <ul class="navbar-nav ms-auto align-items-center">
                         @if (User.Identity.IsAuthenticated)
                         {
@@ -350,7 +350,7 @@
 
                             
 
-                            <!-- User menu -->
+                           
                             <li class="nav-item dropdown">
                                 <a class="nav-link d-flex align-items-center" href="#" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
@@ -394,9 +394,9 @@
         </nav>
     </header>
 
-    <!-- Main Content -->
+    
     <div class="container main-content">
-        <!-- Page Header -->
+       
         <div class="page-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="page-title">@ViewData["Title"]</h1>
@@ -411,13 +411,13 @@
             }
         </div>
 
-        <!-- Render Body -->
+        
         <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <!-- Footer -->
+   
     <footer>
         <div class="container">
             <div class="row align-items-center">

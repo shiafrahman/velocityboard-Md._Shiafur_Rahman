@@ -53,7 +53,7 @@ namespace VelocityBoard.Web.Pages.Account
                         var authProperties = new AuthenticationProperties
                         {
                             IsPersistent = true,
-                            //ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
+                            ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
                         };
 
                         await HttpContext.SignInAsync(
