@@ -1,0 +1,27 @@
+﻿@page
+@model VelocityBoard.Web.Pages.DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Dashboard</h1>
+    <p>Welcome, @User.Identity.Name!</p>
+</div>
+
+<div class="container mt-4">
+    <h3>Projects</h3>
+    @if (Model.Projects.Any())
+    {
+        <ul class="list-group">
+            @foreach (var project in Model.Projects)
+            {
+                <li class="list-group-item">@project</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No projects found.</p>
+    }
+</div>
