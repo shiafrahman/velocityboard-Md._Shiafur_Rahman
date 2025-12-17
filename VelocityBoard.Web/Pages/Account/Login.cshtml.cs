@@ -23,6 +23,8 @@ namespace VelocityBoard.Web.Pages.Account
         {
         }
 
+
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
@@ -40,18 +42,26 @@ namespace VelocityBoard.Web.Pages.Account
                     {
                         
                         var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, Input.UserName),
-                        new Claim("AccessToken", result.Token)
-                    };
+                {
+                    new Claim(ClaimTypes.Name, Input.UserName),
+                    new Claim("AccessToken", result.Token)
+
+                };
 
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                        
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                            new ClaimsPrincipal(claimsIdentity));
+                        var authProperties = new AuthenticationProperties
+                        {
+                            IsPersistent = true,
+                            //ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
+                        };
 
-                        return RedirectToPage("/Index"); 
+                        await HttpContext.SignInAsync(
+                            CookieAuthenticationDefaults.AuthenticationScheme,
+                            new ClaimsPrincipal(claimsIdentity),
+                            authProperties);
+
+                        return RedirectToPage("/Index");
                     }
                 }
                 else
@@ -62,6 +72,11 @@ namespace VelocityBoard.Web.Pages.Account
 
             return Page();
         }
+
+
+
+
+
     }
 
     public class LoginInputModel

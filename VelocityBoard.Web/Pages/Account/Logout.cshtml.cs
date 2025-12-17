@@ -7,21 +7,24 @@ namespace VelocityBoard.Web.Pages.Account
 {
     public class LogoutModel : PageModel
     {
-        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string? returnUrl = null)
         {
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            if (returnUrl != null)
+
+
+            Response.Cookies.Delete("AuthToken");
+            Response.Cookies.Delete(".AspNetCore.Cookies");
+
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
                 return LocalRedirect(returnUrl);
             }
             else
             {
-                // This prevents open redirect attacks.
-                return RedirectToPage("/Index");
+                // Redirect to login page after logout
+                return RedirectToPage("/Account/Login");
             }
-        }
-        public void OnGet()
-        {
         }
     }
 }
