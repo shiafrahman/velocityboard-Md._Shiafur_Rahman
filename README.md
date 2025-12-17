@@ -52,4 +52,25 @@ The application includes:
 
 1. Clone the Repository
   * Clone the project from GitHub to your local machine.
-  * git clone https://github.com/YourUsername/velocityboard-YourName.gitcd velocityboard-YourName
+  * git clone https://github.com/shiafrahman/velocityboard-Md._Shiafur_Rahman.git
+2. Configure the Database Connection String
+  * Open the VelocityBoard.API project.
+  * Navigate to appsettings.json.
+  * Update the DefaultConnection string.
+3. Apply Database Migrations
+  * Open a packager manager console (VelocityBoard.Infrastructure as Default and VelocityBoard.API as Startup Project).
+4. Run the Application
+  * In Solution Explorer, right-click the Solution ('Solution 'VelocityBoard') and select Set Startup Projects....
+  * Select "Multiple startup projects".
+  * Set the Action for both VelocityBoard.API and VelocityBoard.Web to Start.
+  * Click OK.
+
+# Default Login Credentials
+The database is seeded with a few sample users for testing:
+* Username: admin, john.doe, jane.smith	
+* Password: Password123!(For all users)
+
+You can create a new user by clicking register and asign Task and Project.
+
+
+
