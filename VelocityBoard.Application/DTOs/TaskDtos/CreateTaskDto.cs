@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VelocityBoard.Core.Models;
 
-namespace VelocityBoard.Application.DTOs
+namespace VelocityBoard.Application.DTOs.TaskDtos
 {
     public class CreateTaskDto
     {

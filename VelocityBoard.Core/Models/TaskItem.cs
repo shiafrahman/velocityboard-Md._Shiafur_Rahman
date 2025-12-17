@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VelocityBoard.Core.Models
 {
-    public enum TaskStatus { NotStarted, InProgress, Completed }
+    public enum TaskItemStatus { NotStarted, InProgress, Completed }
     public enum TaskPriority { Low, Medium, High }
     public class TaskItem
     {
@@ -14,7 +14,7 @@ namespace VelocityBoard.Core.Models
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
         public DateTime DueDate { get; set; }
-        public TaskStatus Status { get; set; }
+        public TaskItemStatus Status { get; set; }
         public TaskPriority Priority { get; set; }
         public DateTime CreatedDate { get; set; }
 

@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using VelocityBoard.Application.DTOs;
+using VelocityBoard.Application.DTOs.UserDtos;
 using VelocityBoard.Application.Interfaces;
 using VelocityBoard.Core.Models;
 using VelocityBoard.Infrastructure.Data;
@@ -36,7 +37,17 @@ namespace VelocityBoard.Application.Services
                 return null; 
             }
 
-            
+            if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash) && user.UserName==loginDto.UserName)
+            {
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(loginDto.Password);
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash))
+            {
+                return null; 
+            }
+
+
             return GenerateJwtToken(user);
         }
 

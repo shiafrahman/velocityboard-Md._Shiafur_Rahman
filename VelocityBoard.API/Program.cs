@@ -73,7 +73,9 @@ namespace VelocityBoard.API
             });
 
 
-            
+            builder.Services.AddScoped<VelocityBoard.Application.Interfaces.IUserService, VelocityBoard.Application.Services.UserService>();
+
+
             builder.Services.AddAutoMapper(typeof(VelocityBoard.Application.MappingProfile));
 
             builder.Services.AddScoped<VelocityBoard.Application.Interfaces.IAuthService, VelocityBoard.Application.Services.AuthService>();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VelocityBoard.Application.DTOs;
+using VelocityBoard.Application.DTOs.TaskDtos;
 
 namespace VelocityBoard.Application.Interfaces
 {
@@ -15,5 +15,7 @@ namespace VelocityBoard.Application.Interfaces
         Task<TaskDto> CreateTaskAsync(CreateTaskDto createTaskDto);
         Task<bool> UpdateTaskAsync(int id, CreateTaskDto updateTaskDto);
         Task<bool> DeleteTaskAsync(int id);
+        Task<bool> UpdateTaskItemStatusAsync(int id, Core.Models.TaskItemStatus newStatus);
+        Task<IEnumerable<TaskDto>> GetTasksForUserAsync(int userId);
     }
 }

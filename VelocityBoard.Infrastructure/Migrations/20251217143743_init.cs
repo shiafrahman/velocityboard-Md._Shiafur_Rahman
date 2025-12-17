@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace VelocityBoard.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -85,7 +87,33 @@ namespace VelocityBoard.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "FirstName", "LastName", "PasswordHash", "UserName" },
-                values: new object[] { 1, "admin@velocityboard.com", "Admin", "User", "AQAAAAEAACcQAAAAEKqgkTvtFvYn3g4N5sY8V8b8J8P8J8P8J8P8J8P8J8P8J8P8J8P8J8P8J8", "admin" });
+                values: new object[,]
+                {
+                    { 1, "admin@velocityboard.com", "Admin", "User", "$2y$10$ievgpt4SzPDI30dKyajspuWyeW2uQ6KvCsQZIa3koo1OT6g1Zm006", "admin" },
+                    { 2, "john.doe@example.com", "John", "Doe", "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcflpP3OvI0Cz", "john.doe" },
+                    { 3, "jane.smith@example.com", "Jane", "Smith", "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcflpP3OvI0Cz", "jane.smith" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Projects",
+                columns: new[] { "Id", "CreatedByUserId", "CreatedDate", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5010), null, "Website Redesign" },
+                    { 2, 2, new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5023), null, "Mobile App Development" },
+                    { 3, 3, new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5025), null, "Marketing Campaign" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TaskItems",
+                columns: new[] { "Id", "AssignedToUserId", "CreatedDate", "Description", "DueDate", "Priority", "ProjectId", "Status", "Title" },
+                values: new object[,]
+                {
+                    { 1, 2, new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5053), null, new DateTime(2025, 12, 22, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5045), 2, 1, 0, "Design Homepage" },
+                    { 2, 1, new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5056), null, new DateTime(2025, 12, 20, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5054), 2, 1, 1, "Setup Database" },
+                    { 3, 3, new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5058), null, new DateTime(2025, 12, 27, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5057), 1, 2, 0, "Develop Login API" },
+                    { 4, 3, new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5061), null, new DateTime(2025, 12, 24, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5059), 0, 3, 0, "Create Ad Copy" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_CreatedByUserId",

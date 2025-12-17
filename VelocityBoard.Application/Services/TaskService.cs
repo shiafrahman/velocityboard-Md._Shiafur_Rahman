@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VelocityBoard.Application.DTOs;
+using VelocityBoard.Application.DTOs.TaskDtos;
 using VelocityBoard.Application.Interfaces;
 using VelocityBoard.Core.Models;
 using VelocityBoard.Infrastructure.Data;
@@ -55,7 +55,7 @@ namespace VelocityBoard.Application.Services
         {
             var task = _mapper.Map<TaskItem>(createTaskDto);
             task.CreatedDate = DateTime.UtcNow;
-            task.Status = Core.Models.TaskStatus.NotStarted;
+            task.Status = Core.Models.TaskItemStatus.NotStarted;
 
             _context.TaskItems.Add(task);
             await _context.SaveChangesAsync();
@@ -87,6 +87,27 @@ namespace VelocityBoard.Application.Services
             _context.TaskItems.Remove(task);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> UpdateTaskItemStatusAsync(int id, Core.Models.TaskItemStatus newStatus)
+        {
+            var task = await _context.TaskItems.FindAsync(id);
+            if (task == null) return false;
+
+            task.Status = newStatus;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        
+        public async Task<IEnumerable<TaskDto>> GetTasksForUserAsync(int userId)
+        {
+            var tasks = await _context.TaskItems
+                .Where(t => t.AssignedToUserId == userId)
+                .Include(t => t.Project)
+                .Include(t => t.AssignedToUser)
+                .ToListAsync();
+            return _mapper.Map<IEnumerable<TaskDto>>(tasks);
         }
     }
 }

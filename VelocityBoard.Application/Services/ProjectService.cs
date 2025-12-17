@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VelocityBoard.Application.DTOs;
+using VelocityBoard.Application.DTOs.ProjectDto;
+using VelocityBoard.Application.DTOs.ProjectDtos;
 using VelocityBoard.Application.Interfaces;
 using VelocityBoard.Core.Models;
 using VelocityBoard.Infrastructure.Data;
@@ -72,6 +73,16 @@ namespace VelocityBoard.Application.Services
 
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        
+        public async Task<IEnumerable<ProjectDto>> GetProjectsForUserAsync(int userId)
+        {
+            var projects = await _context.Projects
+                .Where(p => p.CreatedByUserId == userId) // <-- THE KEY FILTER
+                .Include(p => p.CreatedByUser)
+                .ToListAsync();
+            return _mapper.Map<IEnumerable<ProjectDto>>(projects);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VelocityBoard.Core.Models;
 
-namespace VelocityBoard.Application.DTOs
+namespace VelocityBoard.Application.DTOs.TaskDtos
 {
     public class TaskDto
     {
@@ -13,7 +13,7 @@ namespace VelocityBoard.Application.DTOs
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
         public DateTime DueDate { get; set; }
-        public Core.Models.TaskStatus Status { get; set; }
+        public TaskItemStatus Status { get; set; }
         public TaskPriority Priority { get; set; }
         public int ProjectId { get; set; }
         public string ProjectName { get; set; } = string.Empty;

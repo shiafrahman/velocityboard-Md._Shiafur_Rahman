@@ -48,6 +48,29 @@ namespace VelocityBoard.Infrastructure.Migrations
                     b.HasIndex("CreatedByUserId");
 
                     b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedByUserId = 1,
+                            CreatedDate = new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5010),
+                            Name = "Website Redesign"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedByUserId = 2,
+                            CreatedDate = new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5023),
+                            Name = "Mobile App Development"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedByUserId = 3,
+                            CreatedDate = new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5025),
+                            Name = "Marketing Campaign"
+                        });
                 });
 
             modelBuilder.Entity("VelocityBoard.Core.Models.TaskItem", b =>
@@ -90,6 +113,52 @@ namespace VelocityBoard.Infrastructure.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("TaskItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AssignedToUserId = 2,
+                            CreatedDate = new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5053),
+                            DueDate = new DateTime(2025, 12, 22, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5045),
+                            Priority = 2,
+                            ProjectId = 1,
+                            Status = 0,
+                            Title = "Design Homepage"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AssignedToUserId = 1,
+                            CreatedDate = new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5056),
+                            DueDate = new DateTime(2025, 12, 20, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5054),
+                            Priority = 2,
+                            ProjectId = 1,
+                            Status = 1,
+                            Title = "Setup Database"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AssignedToUserId = 3,
+                            CreatedDate = new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5058),
+                            DueDate = new DateTime(2025, 12, 27, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5057),
+                            Priority = 1,
+                            ProjectId = 2,
+                            Status = 0,
+                            Title = "Develop Login API"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AssignedToUserId = 3,
+                            CreatedDate = new DateTime(2025, 12, 17, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5061),
+                            DueDate = new DateTime(2025, 12, 24, 20, 37, 42, 785, DateTimeKind.Local).AddTicks(5059),
+                            Priority = 0,
+                            ProjectId = 3,
+                            Status = 0,
+                            Title = "Create Ad Copy"
+                        });
                 });
 
             modelBuilder.Entity("VelocityBoard.Core.Models.User", b =>
@@ -131,8 +200,26 @@ namespace VelocityBoard.Infrastructure.Migrations
                             Email = "admin@velocityboard.com",
                             FirstName = "Admin",
                             LastName = "User",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKqgkTvtFvYn3g4N5sY8V8b8J8P8J8P8J8P8J8P8J8P8J8P8J8P8J8P8J8",
+                            PasswordHash = "$2y$10$ievgpt4SzPDI30dKyajspuWyeW2uQ6KvCsQZIa3koo1OT6g1Zm006",
                             UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "john.doe@example.com",
+                            FirstName = "John",
+                            LastName = "Doe",
+                            PasswordHash = "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcflpP3OvI0Cz",
+                            UserName = "john.doe"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "jane.smith@example.com",
+                            FirstName = "Jane",
+                            LastName = "Smith",
+                            PasswordHash = "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcflpP3OvI0Cz",
+                            UserName = "jane.smith"
                         });
                 });
 

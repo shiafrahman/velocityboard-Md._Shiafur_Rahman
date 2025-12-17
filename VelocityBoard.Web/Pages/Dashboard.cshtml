@@ -4,24 +4,360 @@
     ViewData["Title"] = "Dashboard";
 }
 
+<!-- Custom CSS for Dashboard -->
+<style>
+    :root {
+        --primary: #4361ee;
+        --primary-light: #eef2ff;
+        --secondary: #7209b7;
+        --secondary-light: #f3e8ff;
+        --success: #4cc9f0;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --gray: #6c757d;
+        --light-gray: #e9ecef;
+        --border: #dee2e6;
+        --shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        --shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    /* Welcome Section */
+    .welcome-section {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        border-radius: 1rem;
+        padding: 3rem 2rem;
+        color: white;
+        text-align: center;
+        margin-bottom: 3rem;
+        box-shadow: var(--shadow-lg);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.3;
+            animation: float 20s linear infinite;
+        }
+
+        .welcome-section h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .welcome-section p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 0;
+            position: relative;
+        }
+
+    /* Cards Styling */
+    .dashboard-card {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        height: 100%;
+        background: white;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 1.25rem 1.5rem;
+        border-bottom: none;
+        border-radius: 1rem 1rem 0 0 !important;
+    }
+
+        .card-header-custom h3 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header-custom .badge {
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 0.875rem;
+            padding: 0.35em 0.65em;
+        }
+
+    /* List Items */
+    .list-group-custom {
+        border: none;
+        border-radius: 0 0 1rem 1rem;
+        overflow: hidden;
+    }
+
+        .list-group-custom .list-group-item {
+            border: none;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .list-group-custom .list-group-item:last-child {
+                border-bottom: none;
+            }
+
+            .list-group-custom .list-group-item:hover {
+                background-color: var(--primary-light);
+                transform: translateX(5px);
+            }
+
+            .list-group-custom .list-group-item a {
+                color: var(--dark);
+                text-decoration: none;
+                font-weight: 500;
+                flex-grow: 1;
+                transition: color 0.2s ease;
+            }
+
+            .list-group-custom .list-group-item:hover a {
+                color: var(--primary);
+            }
+
+            .list-group-custom .list-group-item .badge {
+                font-size: 0.75rem;
+                padding: 0.25em 0.5em;
+                font-weight: 600;
+            }
+
+    /* Empty States */
+    .empty-state {
+        padding: 2rem;
+        text-align: center;
+        color: var(--gray);
+    }
+
+        .empty-state a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+            .empty-state a:hover {
+                color: var(--secondary);
+                text-decoration: underline;
+            }
+
+    /* Status Badges */
+    .badge-todo {
+        background-color: #6c757d !important;
+    }
+
+    .badge-inprogress {
+        background-color: #0d6efd !important;
+    }
+
+    .badge-done {
+        background-color: #198754 !important;
+    }
+
+    .badge-blocked {
+        background-color: #dc3545 !important;
+    }
+
+    
+
+    
+   
+
+    /* Grid Layout */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    
+</style>
+
+<!-- Welcome Section -->
+<div class="welcome-section animate-fade-in">
+    <h1>Dashboard</h1>
+    <p>Welcome back, <strong>@User.Identity.Name</strong>!</p>
+</div>
+
+<!-- Dashboard Grid -->
+<div class="dashboard-grid">
+    <!-- Projects Card -->
+    <div class="dashboard-card animate-fade-in" style="animation-delay: 0.1s">
+        <div class="card-header-custom">
+            <h3>
+                <span>
+                    <i class="bi bi-folder me-2"></i>
+                    Your Projects
+                </span>
+                <span class="badge">@Model.Projects.Count</span>
+            </h3>
+        </div>
+        <ul class="list-group list-group-custom">
+            @if (Model.Projects.Any())
+            {
+                @foreach (var project in Model.Projects)
+                {
+                    <li class="list-group-item">
+                        <a asp-page="/Projects/Index" asp-route-id="@project.Id" title="View Project">
+                            @project.Name
+                        </a>
+                        @if (!string.IsNullOrEmpty(project.Description))
+                        {
+                            <small class="text-muted d-block mt-1">@project.Description</small>
+                        }
+                    </li>
+                }
+                <li class="list-group-item">
+                    <a asp-page="/Projects/Edit" class="text-primary">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Create New Project
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="list-group-item empty-state">
+                    <i class="bi bi-folder-x display-6 text-muted mb-3"></i>
+                    <p class="mb-2">No projects found.</p>
+                    <a asp-page="/Projects/Edit" class="d-inline-flex align-items-center">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Create your first project
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <!-- Tasks Card -->
+    <div class="dashboard-card animate-fade-in" style="animation-delay: 0.2s">
+        <div class="card-header-custom">
+            <h3>
+                <span>
+                    <i class="bi bi-check-square me-2"></i>
+                    Your Tasks
+                </span>
+                <span class="badge">@Model.Tasks.Count</span>
+            </h3>
+        </div>
+        <ul class="list-group list-group-custom">
+            @if (Model.Tasks.Any())
+            {
+                @foreach (var task in Model.Tasks)
+                {
+                    <li class="list-group-item">
+                        <a asp-page="/Tasks/Index" asp-route-id="@task.Id" title="View Task">
+                            @task.Title
+                        </a>
+                        
+                        @if (!string.IsNullOrEmpty(task.ProjectName))
+                        {
+                            <small class="text-muted d-block mt-1">
+                                <i class="bi bi-folder me-1"></i>@task.ProjectName
+                            </small>
+                        }
+                    </li>
+                }
+                <li class="list-group-item">
+                    <a asp-page="/Tasks/Edit" class="text-primary">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Create New Task
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="list-group-item empty-state">
+                    <i class="bi bi-check-square display-6 text-muted mb-3"></i>
+                    <p class="mb-2">No tasks found.</p>
+                    <a asp-page="/Tasks/Edit" class="d-inline-flex align-items-center">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Create your first task
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+@* @page
+@model VelocityBoard.Web.Pages.DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
 <div class="text-center">
     <h1 class="display-4">Dashboard</h1>
     <p>Welcome, @User.Identity.Name!</p>
 </div>
 
-<div class="container mt-4">
-    <h3>Projects</h3>
-    @if (Model.Projects.Any())
-    {
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h3>Your Projects (@Model.Projects.Count)</h3>
         <ul class="list-group">
-            @foreach (var project in Model.Projects)
+            @if (Model.Projects.Any())
             {
-                <li class="list-group-item">@project</li>
+                @foreach (var project in Model.Projects)
+                {
+                    <li class="list-group-item list-group-item-action">
+                        <a asp-page="/Projects/Index" asp-route-id="@project.Id">@project.Name</a>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="list-group-item">No projects found. <a asp-page="/Projects/Edit">Create one?</a></li>
             }
         </ul>
-    }
-    else
-    {
-        <p>No projects found.</p>
-    }
-</div>
+    </div>
+    <div class="col-md-6">
+        <h3>Your Tasks (@Model.Tasks.Count)</h3>
+        <ul class="list-group">
+            @if (Model.Tasks.Any())
+            {
+                @foreach (var task in Model.Tasks)
+                {
+                    <li class="list-group-item list-group-item-action">
+                        <a asp-page="/Tasks/Index" asp-route-id="@task.Id">@task.Title</a>
+                        <span class="badge bg-secondary float-end">@task.Status</span>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="list-group-item">No tasks found.</li>
+            }
+        </ul>
+    </div>
+</div> *@

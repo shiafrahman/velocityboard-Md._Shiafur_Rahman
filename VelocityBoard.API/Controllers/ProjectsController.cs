@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using VelocityBoard.Application.DTOs;
+using VelocityBoard.Application.DTOs.ProjectDto;
 using VelocityBoard.Application.Interfaces;
 using VelocityBoard.Core.Models;
 using VelocityBoard.Infrastructure.Data;
@@ -22,14 +22,17 @@ namespace VelocityBoard.API.Controllers
             _projectService = projectService;
         }
 
+        
         [HttpGet]
         public async Task<IActionResult> GetProjects()
         {
-            var projects = await _projectService.GetAllProjectsAsync();
+            
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var projects = await _projectService.GetProjectsForUserAsync(userId);
             return Ok(projects);
         }
 
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProject(int id)
         {

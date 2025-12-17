@@ -1,0 +1,660 @@
+﻿@page
+@model VelocityBoard.Web.Pages.Tasks.IndexModel
+@{
+    ViewData["Title"] = "Tasks";
+}
+
+<style>
+    /* Main Container */
+    .tasks-container {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        border: 1px solid #eef2ff;
+    }
+
+    /* Page Header */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #f1f5f9;
+    }
+
+    .page-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .page-title-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .page-title-icon i {
+            font-size: 24px;
+            color: white;
+        }
+
+    .page-title-text h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .page-title-text p {
+        color: #64748b;
+        margin: 4px 0 0 0;
+        font-size: 14px;
+    }
+
+    /* Create Button */
+    .create-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+        .create-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+    /* Table Container */
+    .table-container {
+        overflow-x: auto;
+        border-radius: 12px;
+        border: 1px solid #f1f5f9;
+    }
+
+    /* Table Styling */
+    .tasks-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        min-width: 1000px;
+    }
+
+        .tasks-table thead {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        .tasks-table th {
+            color: #475569;
+            font-weight: 600;
+            padding: 18px 16px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+            .tasks-table th:first-child {
+                border-top-left-radius: 12px;
+            }
+
+            .tasks-table th:last-child {
+                border-top-right-radius: 12px;
+            }
+
+        .tasks-table tbody tr {
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+            .tasks-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .tasks-table tbody tr:hover {
+                background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 100%);
+            }
+
+        .tasks-table td {
+            padding: 18px 16px;
+            vertical-align: middle;
+            color: #334155;
+            font-size: 14px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+    /* Task Title */
+    .task-title {
+        font-weight: 600;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .task-icon {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #93c5fd 0%, #3b82f6 100%);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .task-icon i {
+            color: white;
+            font-size: 16px;
+        }
+
+    /* Project Column */
+    .project-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .project-icon {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 100%);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .project-icon i {
+            color: white;
+            font-size: 14px;
+        }
+
+    .project-name {
+        color: #475569;
+        font-weight: 500;
+    }
+
+    /* Assigned To */
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #fbcfe8 0%, #f9a8d4 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #831843;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    /* Status Select */
+    .status-select-container {
+        position: relative;
+        width: 140px;
+    }
+
+    .status-select {
+        width: 100%;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        appearance: none;
+        padding-right: 40px;
+    }
+
+        .status-select:hover {
+            border-color: #94a3b8;
+        }
+
+        .status-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+    .select-arrow {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        pointer-events: none;
+    }
+
+    /* Priority */
+    .priority-badge {
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .priority-high {
+        background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+        color: #dc2626;
+        border: 1px solid #fca5a5;
+    }
+
+    .priority-medium {
+        background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+        color: #ea580c;
+        border: 1px solid #fdba74;
+    }
+
+    .priority-low {
+        background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%);
+        color: #16a34a;
+        border: 1px solid #86efac;
+    }
+
+    /* Due Date */
+    .due-date {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        background: #f8fafc;
+        border-radius: 8px;
+        color: #475569;
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+        .due-date i {
+            color: #94a3b8;
+        }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-btn {
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 14px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-edit {
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+    }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+    }
+
+    .empty-state-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+    }
+
+        .empty-state-icon i {
+            font-size: 36px;
+            color: #94a3b8;
+        }
+
+    .empty-state h3 {
+        color: #475569;
+        font-weight: 600;
+        margin-bottom: 12px;
+        font-size: 20px;
+    }
+
+    .empty-state p {
+        color: #64748b;
+        margin-bottom: 30px;
+        font-size: 15px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Status Colors */
+    option[value="Todo"] {
+        color: #64748b;
+    }
+
+    option[value="InProgress"] {
+        color: #3b82f6;
+    }
+
+    option[value="Done"] {
+        color: #10b981;
+    }
+
+    option[value="Blocked"] {
+        color: #ef4444;
+    }
+</style>
+
+<div class="tasks-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-title">
+            <div class="page-title-icon">
+                <i class="bi bi-check-square"></i>
+            </div>
+            <div class="page-title-text">
+                <h1>Tasks</h1>
+                <p>Manage and track all your tasks</p>
+            </div>
+        </div>
+        <a asp-page="/Tasks/Edit" class="create-btn">
+            <i class="bi bi-plus-circle"></i>
+            New Task
+        </a>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container">
+        <table class="tasks-table">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Project</th>
+                    <th>Assigned To</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Tasks.Any())
+                {
+                    @foreach (var task in Model.Tasks)
+                    {
+                        <tr>
+                            <!-- Task Title -->
+                            <td>
+                                <div class="task-title">
+                                    <div class="task-icon">
+                                        <i class="bi bi-card-checklist"></i>
+                                    </div>
+                                    <span>@task.Title</span>
+                                </div>
+                            </td>
+
+                            <!-- Project -->
+                            <td>
+                                <div class="project-info">
+                                    <div class="project-icon">
+                                        <i class="bi bi-folder"></i>
+                                    </div>
+                                    <span class="project-name">@task.ProjectName</span>
+                                </div>
+                            </td>
+
+                            <!-- Assigned To -->
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <div class="user-avatar">
+                                        @task.AssignedToUserName?[0]
+                                    </div>
+                                    <span>@task.AssignedToUserName</span>
+                                </div>
+                            </td>
+
+                            <!-- Status -->
+                            <td>
+                                <div class="status-select-container">
+
+                            
+                                <form method="post" asp-page-handler="UpdateStatus" asp-route-id="@task.Id" class="d-inline">
+                                    <select name="status" onchange="this.form.submit()" class="form-select form-select-sm">
+                                                @foreach (var option in Model.StatusOptions)
+                                                {
+                                            <option value="@option.Value" selected="@(option.Value == task.Status.ToString())">
+                                                        @option.Text
+                                            </option>
+                                                }
+                                    </select>
+                                </form>
+
+                                </div>
+                            </td>
+
+                            <!-- Priority -->
+                            <td>
+                                
+                                <span class="priority-badge">
+                                    <i class="bi bi-flag"></i>
+                                    @task.Priority
+                                </span>
+                            </td>
+
+                            <!-- Due Date -->
+                            <td>
+                                <div class="due-date">
+                                    <i class="bi bi-calendar"></i>
+                                    <span>@task.DueDate.ToShortDateString()</span>
+                                </div>
+                            </td>
+
+                            <!-- Actions -->
+                            <td>
+                                <div class="action-buttons">
+                                    <a asp-page="/Tasks/Edit" asp-route-id="@task.Id" class="action-btn btn-edit" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@task.Id" class="d-inline"
+                                          onsubmit="return confirmDeleteTask('@task.Title.Replace("'", "\\'")');">
+                                        <button type="submit" class="action-btn btn-delete" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="bi bi-check-square"></i>
+                                </div>
+                                <h3>No tasks yet</h3>
+                                <p>Get started by creating your first task. Tasks help you organize and track your work.</p>
+                                <a asp-page="/Tasks/Edit" class="create-btn">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Create First Task
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Status select loading effect
+        const statusSelects = document.querySelectorAll('.status-select');
+        statusSelects.forEach(select => {
+            select.addEventListener('change', function() {
+                // Add loading state
+                this.style.opacity = '0.7';
+                this.disabled = true;
+
+                // Submit the form
+                this.form.submit();
+            });
+        });
+
+        // Priority badge hover effect
+        const priorityBadges = document.querySelectorAll('.priority-badge');
+        priorityBadges.forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+
+            badge.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Action button hover effects
+        const actionButtons = document.querySelectorAll('.action-btn');
+        actionButtons.forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Task row hover effect
+        const taskRows = document.querySelectorAll('.tasks-table tbody tr');
+        taskRows.forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#f8fafc';
+            });
+
+            row.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '';
+            });
+        });
+    });
+
+    function confirmDeleteTask(taskTitle) {
+        return confirm(`Are you sure you want to delete "${taskTitle}"? This action cannot be undone.`);
+    }
+</script>
+
+
+@* 
+@page
+@model VelocityBoard.Web.Pages.Tasks.IndexModel
+@{
+    ViewData["Title"] = "Tasks";
+}
+
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Project</th>
+            <th>Assigned To</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Tasks.Any())
+        {
+            @foreach (var task in Model.Tasks)
+            {
+                <tr>
+                    <td>@task.Title</td>
+                    <td>@task.ProjectName</td>
+                    <td>@task.AssignedToUserName</td>
+                    <td>
+                        <form method="post" asp-page-handler="UpdateStatus" asp-route-id="@task.Id" class="d-inline">
+                            <select name="status" onchange="this.form.submit()" class="form-select form-select-sm">
+                                @foreach (var option in Model.StatusOptions)
+                                {
+                                    <option value="@option.Value" selected="@(option.Value == task.Status.ToString())">
+                                        @option.Text
+                                    </option>
+                                }
+                            </select>
+                        </form>
+
+
+                        
+
+
+                    </td>
+
+                    <td>@task.Priority</td>
+                    <td>@task.DueDate.ToShortDateString()</td>
+                    <td>
+                        <a asp-page="/Tasks/Edit" asp-route-id="@task.Id" class="btn btn-sm btn-secondary">Edit</a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@task.Id" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this task?');">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7" class="text-center">No tasks found.</td>
+            </tr>
+        }
+    </tbody>
+</table> *@

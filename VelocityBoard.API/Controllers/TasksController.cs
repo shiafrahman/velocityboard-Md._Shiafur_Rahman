@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using VelocityBoard.Application.DTOs;
+using VelocityBoard.Application.DTOs.TaskDtos;
 using VelocityBoard.Application.Interfaces;
 
 namespace VelocityBoard.API.Controllers
@@ -18,15 +18,18 @@ namespace VelocityBoard.API.Controllers
             _taskService = taskService;
         }
 
+
         
         [HttpGet]
         public async Task<IActionResult> GetTasks()
         {
-            var tasks = await _taskService.GetAllTasksAsync();
+            
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var tasks = await _taskService.GetTasksForUserAsync(userId);
             return Ok(tasks);
         }
 
-        
+
         [HttpGet("project/{projectId}")]
         public async Task<IActionResult> GetTasksByProject(int projectId)
         {
@@ -60,7 +63,15 @@ namespace VelocityBoard.API.Controllers
             return NoContent();
         }
 
-        
+        [HttpPatch("{id}/status")]
+        public async Task<IActionResult> UpdateTaskItemStatus(int id, [FromBody] UpdateTaskItemStatusDto statusUpdate)
+        {
+            var success = await _taskService.UpdateTaskItemStatusAsync(id, statusUpdate.Status);
+            if (!success) return NotFound();
+            return NoContent();
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(int id)
         {

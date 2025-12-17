@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text.Json;
+using VelocityBoard.Core.Models;
 
 namespace VelocityBoard.Web.Pages
 {
@@ -11,50 +13,53 @@ namespace VelocityBoard.Web.Pages
     public class DashboardModel : PageModel
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        public List<string> Projects { get; set; } = new();
+        public List<ProjectDto> Projects { get; set; } = new();
+        public List<TaskDto> Tasks { get; set; } = new();
 
         public DashboardModel(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
 
-
-        public void OnGet()
-        {
-        }
-
         public async Task<IActionResult> OnGetAsync()
         {
+            Projects = await GetProjectsFromApi();
+            Tasks = await GetTasksFromApi();
+            return Page();
+        }
+
+        private async Task<List<ProjectDto>> GetProjectsFromApi()
+        {
+            var accessToken = User.FindFirstValue("AccessToken");
+            if (string.IsNullOrEmpty(accessToken)) return new List<ProjectDto>();
+
             var client = _httpClientFactory.CreateClient("VelocityBoardAPI");
-
-            
-            var accessToken = await HttpContext.GetTokenAsync("AccessToken");
-
-            if (string.IsNullOrEmpty(accessToken))
-            {
-                return RedirectToPage("/Account/Login");
-            }
-
-            
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            
             var response = await client.GetAsync("/api/projects");
-
             if (response.IsSuccessStatusCode)
             {
-                
                 var contentStream = await response.Content.ReadAsStreamAsync();
-                var projects = await JsonSerializer.DeserializeAsync<List<ProjectDto>>(contentStream);
-                Projects = projects?.Select(p => p.Name).ToList() ?? new List<string>();
+                return await JsonSerializer.DeserializeAsync<List<ProjectDto>>(contentStream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<ProjectDto>();
             }
-            else
-            {
-                
-                return RedirectToPage("/Account/Login");
-            }
+            return new List<ProjectDto>();
+        }
 
-            return Page();
+        private async Task<List<TaskDto>> GetTasksFromApi()
+        {
+            var accessToken = User.FindFirstValue("AccessToken");
+            if (string.IsNullOrEmpty(accessToken)) return new List<TaskDto>();
+
+            var client = _httpClientFactory.CreateClient("VelocityBoardAPI");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await client.GetAsync("/api/tasks");
+            if (response.IsSuccessStatusCode)
+            {
+                var contentStream = await response.Content.ReadAsStreamAsync();
+                return await JsonSerializer.DeserializeAsync<List<TaskDto>>(contentStream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<TaskDto>();
+            }
+            return new List<TaskDto>();
         }
     }
 
@@ -63,5 +68,19 @@ namespace VelocityBoard.Web.Pages
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
+    }
+
+    public class TaskDto
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public DateTime DueDate { get; set; }
+        public TaskItemStatus Status { get; set; }
+        public TaskPriority Priority { get; set; }
+        public string ProjectName { get; set; } = string.Empty;
+        public string AssignedToUserName { get; set; } = string.Empty;
+        public int ProjectId { get; set; }
+        public int AssignedToUserId { get; set; }
     }
 }

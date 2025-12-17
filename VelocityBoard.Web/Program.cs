@@ -19,8 +19,7 @@ namespace VelocityBoard.Web
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             }).ConfigurePrimaryHttpMessageHandler(() =>
             {
-                // This handler is for local development only to bypass SSL certificate validation.
-                // It tells the HttpClient to trust any certificate, including the self-signed one used by the .NET dev certificate.
+                
                 if (builder.Environment.IsDevelopment())
                 {
                     return new HttpClientHandler
@@ -49,6 +48,12 @@ namespace VelocityBoard.Web
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
+            app.MapGet("/", context =>
+            {
+                context.Response.Redirect("/Dashboard");
+                return Task.CompletedTask;
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

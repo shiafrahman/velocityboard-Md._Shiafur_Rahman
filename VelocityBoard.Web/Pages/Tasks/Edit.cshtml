@@ -1,0 +1,65 @@
+﻿@page
+@model VelocityBoard.Web.Pages.Tasks.EditModel
+@{
+    ViewData["Title"] = Model.Id == null ? "Create Task" : "Edit Task";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (Model.Id != null)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+            <div class="form-group mb-3">
+                <label asp-for="Task.Title" class="control-label"></label>
+                <input asp-for="Task.Title" class="form-control" />
+                <span asp-validation-for="Task.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Task.Description" class="control-label"></label>
+                <textarea asp-for="Task.Description" class="form-control"></textarea>
+                <span asp-validation-for="Task.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                @* <label asp-for="Task.ProjectId" class="control-label"></label> *@
+                <label class="control-label">Project</label>
+                <select asp-for="Task.ProjectId" class="form-control" asp-items="Model.Projects"></select>
+                <span asp-validation-for="Task.ProjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                @* <label asp-for="Task.AssignedToUserId" class="control-label"></label> *@
+                <label class="control-label">Assign to</label>
+                <select asp-for="Task.AssignedToUserId" class="form-control" asp-items="Model.Users"></select>
+                <span asp-validation-for="Task.AssignedToUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Task.Priority" class="control-label"></label>
+                <select asp-for="Task.Priority" class="form-control">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+                <span asp-validation-for="Task.Priority" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Task.DueDate" class="control-label"></label>
+                <input asp-for="Task.DueDate" class="form-control" type="date" />
+                <span asp-validation-for="Task.DueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

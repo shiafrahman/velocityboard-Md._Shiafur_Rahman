@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VelocityBoard.Application.DTOs;
+using VelocityBoard.Application.DTOs.ProjectDto;
+using VelocityBoard.Application.DTOs.ProjectDtos;
+using VelocityBoard.Application.DTOs.TaskDtos;
+using VelocityBoard.Application.DTOs.UserDtos;
 using VelocityBoard.Core.Models;
 
 namespace VelocityBoard.Application
@@ -24,6 +27,11 @@ namespace VelocityBoard.Application
             .ForMember(dest => dest.AssignedToUserName, opt => opt.MapFrom(src => src.AssignedToUser.UserName));
 
             CreateMap<CreateTaskDto, TaskItem>();
+
+            CreateMap<CreateUserDto, User>()
+            .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
+
+            CreateMap<User, UserDto>();
         }
     }
 }

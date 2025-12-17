@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VelocityBoard.Application.DTOs
+namespace VelocityBoard.Application.DTOs.ProjectDtos
 {
-    public class CreateProjectDto
+    public class ProjectDto
     {
-        [Required]
-        [StringLength(100)]
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-
-        [StringLength(500)]
         public string? Description { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedByUserName { get; set; } = string.Empty;
     }
 }
