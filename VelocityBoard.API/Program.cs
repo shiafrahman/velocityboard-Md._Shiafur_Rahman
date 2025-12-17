@@ -73,10 +73,15 @@ namespace VelocityBoard.API
             });
 
 
-            //builder.Services.AddAutoMapper(typeof(Program));
+            
             builder.Services.AddAutoMapper(typeof(VelocityBoard.Application.MappingProfile));
+
             builder.Services.AddScoped<VelocityBoard.Application.Interfaces.IAuthService, VelocityBoard.Application.Services.AuthService>();
+
             builder.Services.AddScoped<VelocityBoard.Application.Interfaces.IProjectService, VelocityBoard.Application.Services.ProjectService>();
+
+            
+            builder.Services.AddScoped<VelocityBoard.Application.Interfaces.ITaskService, VelocityBoard.Application.Services.TaskService>();
 
             var app = builder.Build();
 
